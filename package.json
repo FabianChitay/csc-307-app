@@ -1,0 +1,23 @@
+{
+  "name": "csc-307-app",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/FabianChitay/csc-307-app#readme",
+  "bugs": {
+    "url": "https://github.com/FabianChitay/csc-307-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabianChitay/csc-307-app.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+"workspaces": [
+"packages/*"
+]
+}
