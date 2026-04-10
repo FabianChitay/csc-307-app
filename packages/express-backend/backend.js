@@ -90,25 +90,20 @@ app.get("/users", (req, res) => {
 app.get("/users", (req, res) => {
     const name = req.query.name;
     const job = req.query.job;
-    let result;
+    let result = users;
     if (name != undefined && job != undefined) {
         result = findUserByNameandJob(name, job);
         result = { users_list: result };
-        res.send(result);
     }
     else if (name != undefined) {
         result = findUserByName(name);
         result = { users_list: result };
-        res.send(result);
     }
     else if (job != undefined) {
         result = findUserByJob(job);
         result = { users_list: result };
-        res.send(result);
     }
-    else {
-        res.send(users);
-    }
+    res.send(result);
 });
 
 
