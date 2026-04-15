@@ -1,5 +1,6 @@
 // backend.js
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
@@ -66,6 +67,8 @@ const deleteUser = (user) => {
     const index = users["users_list"].indexOf(user);
     users["users_list"].splice(index, 1);
 };
+
+app.use(cors());
 
 app.use(express.json());
 
