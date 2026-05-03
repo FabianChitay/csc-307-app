@@ -82,13 +82,6 @@ function deleteUser(id) {
   return userModel.findByIdAndDelete(id);
 }
 
-/*
-const deleteUser = (user) => {
-  const index = users["users_list"].indexOf(user);
-  users["users_list"].splice(index, 1);
-};
-*/
-
 const generateId = (user) => {
   user["id"] = Math.floor(1000000 * Math.random()).toString();
 };
@@ -135,9 +128,7 @@ app.delete("/users", (req, res) => {
 
 //new function, delete from id url?
 app.delete("/users/:id", (req, res) => {
-  // const id = req.params["id"];
   console.log(req.params, "are params");
-  // console.log(id, "is the user to delete");
   deleteUser(req.params["id"])
   .then((result) => {
     if (result == undefined) {
@@ -151,26 +142,12 @@ app.delete("/users/:id", (req, res) => {
     console.log(error);
     res.status(500).send("Serber error.");
   });
-  
-  /*
-  const userToDelete = findUserById(req.params["id"]);
-  console.log(req.params);
-  console.log(userToDelete);
-  console.log("user ", userToDelete.name, " found.");
-  if (userToDelete === undefined) {
-    res.status(404).send("Resource not found.");
-  } else {
-    deleteUser(userToDelete);
-    console.log("user deleted.");
-    res.status(204).send();
-  }
-  */
 });
 
 app.post("/users", (req, res) => {
   // generateId(req.body);
   const userToAdd = req.body;
-  generateId(userToAdd);
+  // generateId(userToAdd);
   // userToAdd.id = Math.floor(1000000 * Math.random());
   addUser(userToAdd)
   .then((result) => {

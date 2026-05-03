@@ -7,15 +7,6 @@ import React, { useState, useEffect } from "react";
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-  /*
-    function removeOneCharacter(index) {
-     const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-      setCharacters(updated);
-    }
-  */
-
   function removeOneCharacter(index) {
     console.log(characters[index]._id);
     deleteUser(characters[index]._id)
@@ -32,16 +23,6 @@ function MyApp() {
         console.log(error);
       });
   }
-
-  /*
-  function updateList(person) { 
-    postUser(person)
-      .then(() => setCharacters([...characters, person]))
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-  */
 
   function updateList(person) {
     postUser(person).then((res) =>
