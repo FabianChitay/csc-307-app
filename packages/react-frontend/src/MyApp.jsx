@@ -17,8 +17,8 @@ function MyApp() {
   */
 
   function removeOneCharacter(index) {
-    console.log(characters[index].id);
-    deleteUser(characters[index].id)
+    console.log(characters[index]._id);
+    deleteUser(characters[index]._id)
       .then((res) => (res.status == 204 ? res : undefined))
       .then((res) => {
         if (res) {
