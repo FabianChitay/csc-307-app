@@ -34,10 +34,7 @@ const userModel = mongoose.model("User", UserSchema);
 mongoose.set("debug", true);
 
 mongoose
-  .connect("mongodb://localhost:27017/users", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect("mongodb://localhost:27017/users")
   .catch((error) => console.log(error));
 
 function getUsers(name, job) {
@@ -96,28 +93,29 @@ app.get("/", (req, res) => {
 app.get("/users", (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
-  let result = users;
-  if (name != undefined && job != undefined) {
-    result = findUserByNameandJob(name, job);
-    result = { users_list: result };
-  } else if (name != undefined) {
-    result = findUserByName(name);
-    result = { users_list: result };
-  } else if (job != undefined) {
-    result = findUserByJob(job);
-    result = { users_list: result };
-  }
-  res.send(result);
+
+  getUsers(name, job)
+  .then((result) => res.send({users_list: result}))
+  .catch((error) => {
+    console.log(error);
+    res.status(500).send("Server error.");
+  })
 });
 
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
-  let result = findUserById(id);
-  if (result === undefined) {
-    res.status(404).send("Resource not found.");
-  } else {
-    res.send(result);
-  }
+  findUserById(id)
+  .then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send({users_list: result});
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).send("Server error.");
+  });
 });
 
 /*
@@ -148,9 +146,14 @@ app.post("/users", (req, res) => {
   const userToAdd = req.body;
   generateId(userToAdd);
   // userToAdd.id = Math.floor(1000000 * Math.random());
-  addUser(userToAdd);
-  console.log("user ", userToAdd.name, "added.");
-  res.status(201).send(userToAdd);
+  addUser(userToAdd)
+  .then((result) => {
+    console.log("user ", result.name, "added.");
+    res.status(201).send(result);
+  })
+  .catch((error) => {
+    res.status(500).send("Server error.");
+    console.log(error)});
 });
 
 app.listen(port, () => {
