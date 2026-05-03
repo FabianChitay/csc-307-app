@@ -46,6 +46,9 @@ function getUsers(name, job) {
   } else if (job && !name) {
     promise = findUserByJob(job);
   }
+  else if (name && job) {
+    promise = findUserByNameandJob(name, job);
+  }
   return promise;
 }
 
@@ -70,17 +73,21 @@ function findUserByJob(job) {
 //end of mongoDB code
 //start of my code
 
+function findUserByNameandJob(name, job) {
+  return userModel.find({name: name, job: job});
+}
 
-const findUserByNameandJob = (name, job) => {
-  return users["users_list"].filter(
-    (user) => user["name"] === name && user["job"] === job,
-  );
-};
+function deleteUser(id) {
+  console.log(id, "found");
+  return userModel.findByIdAndDelete(id);
+}
 
+/*
 const deleteUser = (user) => {
   const index = users["users_list"].indexOf(user);
   users["users_list"].splice(index, 1);
 };
+*/
 
 const generateId = (user) => {
   user["id"] = Math.floor(1000000 * Math.random()).toString();
@@ -128,6 +135,24 @@ app.delete("/users", (req, res) => {
 
 //new function, delete from id url?
 app.delete("/users/:id", (req, res) => {
+  // const id = req.params["id"];
+  console.log(req.params, "are params");
+  // console.log(id, "is the user to delete");
+  deleteUser(req.params["id"])
+  .then((result) => {
+    if (result == undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      console.log("user", result.name, "deleted.");
+      res.status(204).send();
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).send("Serber error.");
+  });
+  
+  /*
   const userToDelete = findUserById(req.params["id"]);
   console.log(req.params);
   console.log(userToDelete);
@@ -139,6 +164,7 @@ app.delete("/users/:id", (req, res) => {
     console.log("user deleted.");
     res.status(204).send();
   }
+  */
 });
 
 app.post("/users", (req, res) => {
